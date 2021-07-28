@@ -1,0 +1,352 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+        "title":"Atlas API Documentation",
+        "description": "Atlas API Users Documentation",
+        "version":"1.0.0",
+        "contact":{
+            "email":"mecl.ely@gmail.com"
+        }
+    },
+    "tags":[
+        {
+            "name":"Users",
+            "description":"Controle de usuários"
+        }
+    ],
+    "paths":{
+        "/users":{
+            "post":{
+                "tags":[
+                    "Users"
+                ],
+                "summary":"Create New User",
+                "description":"Create new user with `name` and `email` ",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string"
+                                        },
+                                        "email":{
+                                            "type":"string"
+                                        }
+                                    },
+                                    "example":{
+                                        "name":"Misael Lopes",
+                                        "email":"mecl.ely@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "descripiton":"Created",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "admin":{
+                                                "type":"boolean"
+                                            },
+                                            "id":{
+                                                "type":"string"
+                                            },
+                                            "name":{
+                                                "type":"string"
+                                            },
+                                            "email":{
+                                                "type":"string"
+                                            },
+                                            "created_at":{
+                                                "type":"date"
+                                            },
+                                            "updated_at":{
+                                                "type":"date"
+                                            }
+                                        },
+                                        "example":{
+                                            "admin":false,
+                                            "id":"38ab4505-db46-42ab-a95a-a981343a3c94",
+                                            "name":"Misael Lopes",
+                                            "email":"mecl.ely@gmail.com",
+                                            "created_at":"2021-03-20T14:06:10.530Z",
+                                            "updated_at":"2021-03-20T14:06:10.530Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User not created",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "error":{
+                                                "type":"message"
+                                            }
+                                        },
+                                        "example":{
+                                            "error":"Email Already Taken!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "tags":[
+                    "Users"
+                ],
+                "summary":"List All Users",
+                "description":"Only an `admin` Can Access This Route",
+                "parameters":[
+                    {
+                        "name": "user_id",
+                        "in": "header",
+                        "description":"User ID",
+                        "required": true,
+                        "schema": {
+                          "type": "string",
+                          "format":"uuid"
+                        }
+                      }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Listing All Users",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "admin":{
+                                                "type":"boolean"
+                                            },
+                                            "id":{
+                                                "type":"string"
+                                            },
+                                            "name":{
+                                                "type":"string"
+                                            },
+                                            "email":{
+                                                "type":"string"
+                                            },
+                                            "created_at":{
+                                                "type":"date"
+                                            },
+                                            "updated_at":{
+                                                "type":"date"
+                                            }
+                                        },
+                                        "example":[
+                                           {
+                                            "admin":true,
+                                            "id":"38ab4505-db46-42ab-a95a-a981343a3c94",
+                                            "name":"Misael Lopes",
+                                            "email":"mecl.ely@gmail.com",
+                                            "created_at":"2021-03-20T14:06:10.530Z",
+                                            "updated_at":"2021-03-20T14:06:10.530Z"
+                                           },
+                                           {
+                                            "admin":false,
+                                            "id":"38ab4505-db46-42ab-a95a-a981343a3c94",
+                                            "name":"Elieser Cleófas",
+                                            "email":"misael.lopes01@hotmail.com",
+                                            "created_at":"2021-03-20T14:06:10.530Z",
+                                            "updated_at":"2021-03-20T14:06:10.530Z"
+                                          }
+                                        ]
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User Do Not Have Permission To Access This Route",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "error":{
+                                                "type":"message"
+                                            }
+                                        },
+                                        "example":{
+                                            "error":"User Not Admin"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}":{
+            "get":{
+                "tags":[
+                    "Users"
+                ],
+                "summary":"List User Profile",
+                "description":"With `user_id` Return His Profile Data",
+                "parameters":[
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description":"ID do usuário",
+                        "required": true,
+                        "schema": {
+                          "type": "string",
+                          "format":"uuid"
+                        }
+                      }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Success",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "admin":{
+                                                "type":"boolean"
+                                            },
+                                            "id":{
+                                                "type":"string"
+                                            },
+                                            "name":{
+                                                "type":"string"
+                                            },
+                                            "email":{
+                                                "type":"string"
+                                            },
+                                            "created_at":{
+                                                "type":"date"
+                                            },
+                                            "updated_at":{
+                                                "type":"date"
+                                            }
+                                        },
+                                        "example":{
+                                            "admin":true,
+                                            "id":"38ab4505-db46-42ab-a95a-a981343a3c94",
+                                            "name":"Misael Lopes",
+                                            "email":"mecl.ely@gmail.com",
+                                            "created_at":"2021-03-20T14:06:10.530Z",
+                                            "updated_at":"2021-03-20T14:06:10.530Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User Not Found",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "error":{
+                                                "type":"message"
+                                            }
+                                        },
+                                        "example":{
+                                            "error":"User Not Found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin":{
+            "patch":{
+                "tags":[
+                    "Users"
+                ],
+                "summary":"Turn An User As Admin",
+                "description":"With `user_id` Can Turn as Administrator in This Route",
+                "parameters":[
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description":"ID do usuário",
+                        "required": true,
+                        "schema": {
+                          "type": "string",
+                          "format":"uuid"
+                        }
+                      }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"Success",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "admin":{
+                                                "type":"boolean"
+                                            },
+                                            "id":{
+                                                "type":"string"
+                                            },
+                                            "name":{
+                                                "type":"string"
+                                            },
+                                            "email":{
+                                                "type":"string"
+                                            },
+                                            "created_at":{
+                                                "type":"date"
+                                            },
+                                            "updated_at":{
+                                                "type":"date"
+                                            }
+                                        },
+                                        "example":{
+                                            "admin":true,
+                                            "id":"38ab4505-db46-42ab-a95a-a981343a3c94",
+                                            "name":"Misael Lopes",
+                                            "email":"mecl.ely@gmail.com",
+                                            "created_at":"2021-03-20T14:06:10.530Z",
+                                            "updated_at":"2021-03-20T14:06:10.530Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"User Not Found",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                        "properties":{
+                                            "error":{
+                                                "type":"message"
+                                            }
+                                        },
+                                        "example":{
+                                            "error":"User Not Found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
